@@ -1,0 +1,467 @@
+/* ============================================================
+   index.css — _TODO Lista de Tarefas
+   Estética: Neo-brutalista escuro · amarelo-neon + preto-grafite
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+/* ── Variáveis ─────────────────────────────────────────────── */
+:root {
+  --bg:          #0A0A0A;
+  --bg-2:        #111111;
+  --surface:     #161616;
+  --surface-2:   #1E1E1E;
+  --border:      #2A2A2A;
+  --border-2:    #333;
+  --text:        #E8E8E0;
+  --text-dim:    #666;
+  --text-muted:  #444;
+  --acento:      #D4FF00;        /* amarelo-neon */
+  --acento-dim:  rgba(212,255,0,.12);
+  --concluida:   #3A3A3A;
+  --perigo:      #FF4444;
+  --ok:          #00CC66;
+
+  --font-display: 'Archivo Black', sans-serif;
+  --font-mono:    'IBM Plex Mono', monospace;
+
+  --raio:    4px;
+  --raio-lg: 8px;
+  --sombra:  0 0 0 1px var(--border), 0 8px 32px rgba(0,0,0,.6);
+}
+
+/* ── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+
+body {
+  font-family: var(--font-mono);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  /* Textura sutil de ruído */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+ul { list-style: none; }
+a  { color: inherit; }
+button { cursor: pointer; font-family: var(--font-mono); }
+
+/* ── Página ────────────────────────────────────────────────── */
+.pagina {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem 1rem 4rem;
+  gap: 2rem;
+}
+
+/* ── Header ────────────────────────────────────────────────── */
+.pagina__header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .35rem;
+}
+
+.pagina__logo {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: .3em;
+  color: var(--acento);
+  text-transform: uppercase;
+}
+
+.pagina__logo span {
+  animation: piscar 1s step-end infinite;
+  color: var(--acento);
+}
+
+@keyframes piscar { 0%,100%{opacity:1} 50%{opacity:0} }
+
+.pagina__titulo {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 3.25rem);
+  letter-spacing: -.02em;
+  color: var(--text);
+  line-height: 1;
+}
+
+.pagina__sub {
+  font-size: .75rem;
+  color: var(--text-dim);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  margin-top: .15rem;
+}
+
+/* ── Card principal ────────────────────────────────────────── */
+.pagina__card {
+  width: 100%;
+  max-width: 640px;
+  background: var(--surface);
+  border: 2px solid var(--border-2);
+  border-radius: var(--raio-lg);
+  box-shadow: var(--sombra);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Formulário ────────────────────────────────────────────── */
+.form-nova {
+  padding: 1.25rem 1.5rem 1rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-2);
+}
+
+.form-nova__campo {
+  display: flex;
+  gap: 0;
+  border: 2px solid var(--border-2);
+  border-radius: var(--raio);
+  overflow: hidden;
+  transition: border-color .2s;
+}
+
+.form-nova__campo:focus-within { border-color: var(--acento); }
+.form-nova__campo.--erro        { border-color: var(--perigo); }
+
+.form-nova__campo input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: .8rem 1rem;
+  font-family: var(--font-mono);
+  font-size: .97rem;
+  color: var(--text);
+  outline: none;
+}
+
+.form-nova__campo input::placeholder { color: var(--text-muted); }
+
+.form-nova__campo button {
+  background: var(--acento);
+  border: none;
+  padding: 0 1.25rem;
+  color: var(--bg);
+  font-size: 1.6rem;
+  font-weight: 900;
+  line-height: 1;
+  transition: background .15s, transform .1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-nova__campo button:hover  { background: #c8f200; }
+.form-nova__campo button:active { transform: scale(.93); }
+.form-nova__campo button span   { display: block; margin-top: -2px; }
+
+.form-nova__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: .5rem;
+  font-size: .72rem;
+  color: var(--text-dim);
+}
+
+.form-nova__erro { color: var(--perigo); }
+.form-nova__hint { opacity: .5; }
+
+.form-nova__chars {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.form-nova__chars-bar {
+  height: 3px;
+  border-radius: 999px;
+  width: 0;
+  transition: width .2s, background .2s;
+  min-width: 2px;
+  background: var(--acento);
+}
+
+/* ── Progresso ─────────────────────────────────────────────── */
+.progresso {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.progresso__header {
+  display: flex;
+  justify-content: space-between;
+  font-size: .75rem;
+  color: var(--text-dim);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: .5rem;
+}
+
+.progresso__pct {
+  color: var(--acento);
+  font-weight: 600;
+}
+
+.progresso__trilha {
+  height: 5px;
+  background: var(--border-2);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progresso__barra {
+  height: 100%;
+  background: var(--acento);
+  border-radius: 999px;
+  transition: width .55s cubic-bezier(.4,0,.2,1);
+}
+
+.progresso__detalhe {
+  display: flex;
+  justify-content: space-between;
+  font-size: .7rem;
+  color: var(--text-muted);
+  margin-top: .4rem;
+}
+
+/* ── Filtros ───────────────────────────────────────────────── */
+.filtros {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .75rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-2);
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+
+.filtros__tabs {
+  display: flex;
+  gap: .25rem;
+}
+
+.filtros__tab {
+  background: transparent;
+  border: 1px solid var(--border-2);
+  border-radius: var(--raio);
+  padding: .35em .85em;
+  font-size: .78rem;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  transition: all .15s;
+}
+
+.filtros__tab:hover { border-color: var(--acento); color: var(--text); }
+
+.filtros__tab.--ativo {
+  background: var(--acento);
+  border-color: var(--acento);
+  color: var(--bg);
+  font-weight: 600;
+}
+
+.filtros__tab-count {
+  font-size: .68rem;
+  background: rgba(255,255,255,.1);
+  padding: .1em .45em;
+  border-radius: 999px;
+  min-width: 1.4em;
+  text-align: center;
+}
+
+.filtros__tab.--ativo .filtros__tab-count {
+  background: rgba(0,0,0,.2);
+}
+
+.filtros__limpar {
+  background: none;
+  border: 1px solid var(--border-2);
+  border-radius: var(--raio);
+  padding: .35em .75em;
+  font-size: .72rem;
+  color: var(--text-muted);
+  transition: border-color .15s, color .15s;
+  white-space: nowrap;
+}
+
+.filtros__limpar:hover { border-color: var(--perigo); color: var(--perigo); }
+
+/* ── Lista ─────────────────────────────────────────────────── */
+.lista-tarefas {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── Item Tarefa ───────────────────────────────────────────── */
+.item-tarefa {
+  display: flex;
+  align-items: flex-start;
+  gap: .75rem;
+  padding: .9rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  transition: background .15s;
+  animation: slideIn .22s ease both;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.item-tarefa:last-child { border-bottom: none; }
+.item-tarefa:hover      { background: var(--surface-2); }
+.item-tarefa.--editando { background: rgba(212,255,0,.03); }
+
+/* Checkbox */
+.item-tarefa__check {
+  width: 1.35rem;
+  height: 1.35rem;
+  border: 2px solid var(--border-2);
+  border-radius: var(--raio);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: .15rem;
+  transition: border-color .15s, background .15s;
+  font-size: .75rem;
+  color: var(--bg);
+  font-weight: 900;
+}
+
+.item-tarefa__check:hover { border-color: var(--acento); }
+
+.item-tarefa.--concluida .item-tarefa__check {
+  background: var(--acento);
+  border-color: var(--acento);
+}
+
+/* Corpo */
+.item-tarefa__corpo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+  min-width: 0;
+}
+
+.item-tarefa__texto {
+  font-size: .93rem;
+  line-height: 1.5;
+  color: var(--text);
+  word-break: break-word;
+  transition: color .2s;
+  cursor: default;
+}
+
+.item-tarefa.--concluida .item-tarefa__texto {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.item-tarefa__edit-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid var(--acento);
+  padding: .1rem 0;
+  font-family: var(--font-mono);
+  font-size: .93rem;
+  color: var(--acento);
+  outline: none;
+  width: 100%;
+}
+
+.item-tarefa__data {
+  font-size: .68rem;
+  color: var(--text-muted);
+  letter-spacing: .04em;
+}
+
+/* Ações */
+.item-tarefa__acoes {
+  display: flex;
+  gap: .25rem;
+  opacity: 0;
+  transition: opacity .15s;
+  flex-shrink: 0;
+}
+
+.item-tarefa:hover  .item-tarefa__acoes { opacity: 1; }
+.item-tarefa.--editando .item-tarefa__acoes { opacity: 1; }
+
+.item-tarefa__btn {
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 1px solid var(--border-2);
+  border-radius: var(--raio);
+  background: transparent;
+  color: var(--text-dim);
+  font-size: .85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .15s;
+}
+
+.item-tarefa__btn.--remover:hover { border-color: var(--perigo); color: var(--perigo); background: rgba(255,68,68,.08); }
+.item-tarefa__btn.--editar:hover  { border-color: var(--acento); color: var(--acento); }
+.item-tarefa__btn.--ok:hover      { border-color: var(--ok);     color: var(--ok); }
+.item-tarefa__btn.--cancel:hover  { border-color: var(--perigo); color: var(--perigo); }
+
+/* ── Estado vazio ──────────────────────────────────────────── */
+.lista-vazia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3.5rem 2rem;
+  gap: .75rem;
+  text-align: center;
+}
+
+.lista-vazia__emoji {
+  font-size: 2.5rem;
+  opacity: .18;
+  line-height: 1;
+}
+
+.lista-vazia__texto {
+  font-size: .95rem;
+  color: var(--text-dim);
+  font-weight: 600;
+}
+
+.lista-vazia__sub {
+  font-size: .8rem;
+  color: var(--text-muted);
+}
+
+/* ── Rodapé da página ──────────────────────────────────────── */
+.pagina__rodape {
+  font-size: .7rem;
+  color: var(--text-muted);
+  letter-spacing: .08em;
+  text-align: center;
+}
+
+/* ── Responsividade ────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .pagina { padding: 2rem .75rem 3rem; gap: 1.5rem; }
+  .pagina__card { border-left: none; border-right: none; border-radius: 0; }
+  .filtros { gap: .4rem; }
+  .filtros__limpar { font-size: .68rem; padding: .3em .6em; }
+  .item-tarefa__acoes { opacity: 1; }  /* sempre visível no mobile */
+}
